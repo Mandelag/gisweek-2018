@@ -29,7 +29,7 @@
             container: "viewDiv",  // Reference to the scene div created in step 5
             map: map,  // Reference to the map object created before the scene
             zoom: 4,  // Sets zoom level based on level of detail (LOD)
-            center: [0, 0]  // Sets center point of view using longitude,latitude
+            center: [99, 6]  // Sets center point of view using longitude,latitude
           });
           
           function geometryOf(character) {
@@ -56,14 +56,16 @@
             let j = 0
             const LETTER_SPACING = 3
             for ( letter of word ) {
-              let resized = resize(fonts[letter], (i) => i*scale)
-              let resizedAndMoved = move(resized, (m => [start_x+m[0]+j*LETTER_SPACING, start_y+m[1]]))
-              let letterGraphic = geometryOf(resizedAndMoved)
-              view.graphics.add(letterGraphic)
+              if(letter !== " ") {
+                let resized = resize(fonts[letter], (i) => i*scale)
+                let resizedAndMoved = move(resized, (m => [start_x+m[0]+j*LETTER_SPACING, start_y+m[1]]))
+                let letterGraphic = geometryOf(resizedAndMoved)
+                view.graphics.add(letterGraphic)
+              }
               j = j + 1
             }
           }
-      helloGis('keenan', 0.3, 0, 0)
+      helloGis('keenan hello world', 0.3, 99, -6)
     });
     </script>
   </head>
