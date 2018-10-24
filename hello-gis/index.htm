@@ -28,13 +28,13 @@ require([
     container: "viewDiv",  // Reference to the scene div created in step 5
     map: map,  // Reference to the map object created before the scene
     zoom: 4,  // Sets zoom level based on level of detail (LOD)
-    center: [15, 65]  // Sets center point of view using longitude,latitude
+    center: [0, 0]  // Sets center point of view using longitude,latitude
   });
   
-  function getGeometryOf(character) {
+  function geometryOf(character) {
     let line = {
       type: "polyline",
-      paths: fonts[character]
+      paths: character
     } 
     var lineSymbol = {
         type: "simple-line",  // autocasts as new SimpleLineSymbol()
@@ -46,10 +46,23 @@ require([
         symbol: lineSymbol,   // Add the symbol created in step 5
         //attributes: lineAtt   // Add the attributes created in step 6
     });
-    view.graphics.add(polylineGraphic)
+    return polylineGraphic
+  }
+    
+  function helloGis(word, scale, start_x, start_y) {
+    let j = 0
+    const LETTER_SPACING = 3
+    for ( letter of word ) {
+        let resized = resize(fonts[letter], (i) => i*scale)
+        let resizedAndMoved = move(resized, (m => [start_x+m[0]+j*LETTER_SPACING, start_y+m[1]]))
+        let letterGraphic = geometryOf(resizedAndMoved)
+        view.graphics.add(letterGraphic)
+        j = j + 1
+    }
   }
   
-  getGeometryOf("e")
+  helloGis('hehe', 0.3, 0, 0)
+  
   
 });
 </script>
