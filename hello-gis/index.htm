@@ -1,73 +1,73 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Intro to MapView - Create a 2D map</title>
-<style>
-  html, body, #viewDiv {
-    padding: 0;
-    margin: 0;
-    height: 100%;
-    width: 100%;
-  }
-</style>
-<link rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.css">
-<script src="https://js.arcgis.com/4.9/"></script>
-<script src="index.js"></script>
-<script>
-require([
-  "esri/Map",
-  "esri/views/MapView",
-  "esri/Graphic"
-], function(Map, MapView, Graphic){
-  var map = new Map({
-    basemap: "streets"
-  });
-  var view = new MapView({
-    container: "viewDiv",  // Reference to the scene div created in step 5
-    map: map,  // Reference to the map object created before the scene
-    zoom: 4,  // Sets zoom level based on level of detail (LOD)
-    center: [0, 0]  // Sets center point of view using longitude,latitude
-  });
-  
-  function geometryOf(character) {
-    let line = {
-      type: "polyline",
-      paths: character
-    } 
-    var lineSymbol = {
-        type: "simple-line",  // autocasts as new SimpleLineSymbol()
-        color: [226, 119, 40],  // RGB color values as an array
-        width: 4
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Intro to MapView - Create a 2D map</title>
+    <style>
+      html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
     }
-    var polylineGraphic = new Graphic({
-        geometry: line,   // Add the geometry created in step 4
-        symbol: lineSymbol,   // Add the symbol created in step 5
-        //attributes: lineAtt   // Add the attributes created in step 6
+    </style>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.css">
+    <script src="https://js.arcgis.com/4.9/"></script>
+    <script src="index.js"></script>
+    <script>
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/Graphic"
+    ], function(Map, MapView, Graphic){
+          const map = new Map({
+            basemap: "streets"
+          });
+        
+         const view = new MapView({
+            container: "viewDiv",  // Reference to the scene div created in step 5
+            map: map,  // Reference to the map object created before the scene
+            zoom: 4,  // Sets zoom level based on level of detail (LOD)
+            center: [0, 0]  // Sets center point of view using longitude,latitude
+          });
+          
+          function geometryOf(character) {
+            let line = {
+              type: "polyline",
+              paths: character
+            }
+            
+            const lineSymbol = {
+              type: "simple-line",  // autocasts as new SimpleLineSymbol()
+              color: [226, 119, 40],  // RGB color values as an array
+              width: 4
+            }
+              
+            const polylineGraphic = new Graphic({
+              geometry: line,   // Add the geometry created in step 4
+              symbol: lineSymbol,   // Add the symbol created in step 5
+              //attributes: lineAtt   // Add the attributes created in step 6
+            });
+            return polylineGraphic
+          }
+          
+          function helloGis(word, scale, start_x, start_y) {
+            let j = 0
+            const LETTER_SPACING = 3
+            for ( letter of word ) {
+              let resized = resize(fonts[letter], (i) => i*scale)
+              let resizedAndMoved = move(resized, (m => [start_x+m[0]+j*LETTER_SPACING, start_y+m[1]]))
+              let letterGraphic = geometryOf(resizedAndMoved)
+              view.graphics.add(letterGraphic)
+              j = j + 1
+            }
+          }
+      helloGis('keenan', 0.3, 0, 0)
     });
-    return polylineGraphic
-  }
-    
-  function helloGis(word, scale, start_x, start_y) {
-    let j = 0
-    const LETTER_SPACING = 3
-    for ( letter of word ) {
-        let resized = resize(fonts[letter], (i) => i*scale)
-        let resizedAndMoved = move(resized, (m => [start_x+m[0]+j*LETTER_SPACING, start_y+m[1]]))
-        let letterGraphic = geometryOf(resizedAndMoved)
-        view.graphics.add(letterGraphic)
-        j = j + 1
-    }
-  }
-  
-  helloGis('hehe', 0.3, 0, 0)
-  
-  
-});
-</script>
-</head>
-<body style="width:100%;height:100%;">
-  <div id="viewDiv" style="width:100%;height:100%"></div>
-</body>
+    </script>
+  </head>
+  <body style="width:100%;height:100%;">
+    <div id="viewDiv" style="width:100%;height:100%"></div>
+  </body>
 </html>
